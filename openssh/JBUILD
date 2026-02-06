@@ -1,0 +1,35 @@
+name="openssh"
+version="10.0p1"
+url="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz"
+md5="689148621a2eaa734497b12bed1c5202"
+
+prepare() {
+    groupadd -g 50 sshd        &&
+    useradd  -c 'sshd PrivSep' \
+             -d /var/lib/sshd  \
+             -g sshd           \
+             -s /bin/false     \
+             -u 50 sshd
+}
+
+build() {
+    ./configure --prefix=/usr                            \
+            --sysconfdir=/etc/ssh                    \
+            --with-privsep-path=/var/lib/sshd        \
+            --with-default-path=/usr/bin             \
+            --with-superuser-path=/usr/sbin:/usr/bin \
+            --with-pid-dir=/run                      &&
+    make
+}
+
+package() {
+    install -v -g sys -m700 -d $DESTDIR/var/lib/sshd &&
+    make install DESTDIR=$DESTDIR &&
+    install -v -m755    contrib/ssh-copy-id $DESTDIR/usr/bin     &&
+
+    install -v -m644    contrib/ssh-copy-id.1 \
+                        $DESTDIR/usr/share/man/man1              &&
+    install -v -m755 -d $DESTDIR/usr/share/doc/openssh-10.0p1     &&
+    install -v -m644    INSTALL LICENCE OVERVIEW README* \
+                        $DESTDIR/usr/share/doc/openssh-10.0p1
+}
