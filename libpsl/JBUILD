@@ -1,6 +1,7 @@
 name="libpsl"
 version="0.21.5"
 url="https://github.com/rockdaboot/$name/releases/download/$version/$name-$version.tar.gz"
+deps=("libunistring" "libidn2")
 
 build() {
     mkdir build &&
