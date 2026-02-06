@@ -1,0 +1,10 @@
+name="make-ca"
+version="1.16.1"
+url="https://github.com/lfs-book/make-ca/archive/v$version/make-ca-$version.tar.gz"
+md5="bf9cea2d24fc5344d4951b49f275c595"
+deps=("p11-kit")
+
+package() {
+    make install DESTDIR=$DESTDIR &&
+    install -vdm755 $DESTDIR/etc/ssl/local
+}
