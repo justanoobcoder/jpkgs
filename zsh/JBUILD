@@ -40,7 +40,8 @@ package() {
     make install DESTDIR=$DESTDIR                                   &&
     make infodir=$DESTDIR/usr/share/info install.info                       &&
     make htmldir=$DESTDIR/usr/share/doc/zsh-$version/html install.html           &&
-    install -v -Dm644 zsh.{html,txt} Etc/FAQ $DESTDIR/usr/share/doc/zsh-$version
+    mkdir -pv $DESTDIR/usr/share/doc/zsh-$version
+    install -v -m644 zsh.{html,txt} Etc/FAQ $DESTDIR/usr/share/doc/zsh-$version
 }
 
 post_install() {
