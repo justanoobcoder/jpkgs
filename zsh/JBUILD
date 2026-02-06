@@ -1,0 +1,50 @@
+name="zsh"
+version="5.9"
+url="https://www.zsh.org/pub/zsh-$version.tar.xz"
+md5="182e37ca3fe3fa6a44f69ad462c5c30e"
+
+prepare() {
+    sed -e 's/set_from_init_file/texinfo_&/' \
+        -i Doc/Makefile.in
+    sed -e 's/^main/int &/'      \
+        -e 's/exit(/return(/'    \
+        -i aczsh.m4 configure.ac &&
+
+    sed -e 's/test = /&(char**)/' \
+        -i configure.ac           &&
+
+    autoconf
+
+    sed -e 's|/etc/z|/etc/zsh/z|g' \
+        -i Doc/*.*
+}
+
+build() {
+    ./configure --prefix=/usr            \
+                --sysconfdir=/etc/zsh    \
+                --enable-etcdir=/etc/zsh \
+                --enable-cap             \
+                --enable-gdbm            &&
+    make                                 &&
+
+    makeinfo  Doc/zsh.texi --html      -o Doc/html &&
+    makeinfo  Doc/zsh.texi --plaintext -o zsh.txt  &&
+    makeinfo  Doc/zsh.texi --html --no-split --no-headers -o zsh.html
+}
+
+check() {
+    make check
+}
+
+package() {
+    make install DESTDIR=$DESTDIR                                   &&
+    make infodir=$DESTDIR/usr/share/info install.info                       &&
+    make htmldir=$DESTDIR/usr/share/doc/zsh-$version/html install.html           &&
+    install -v -m644 zsh.{html,txt} Etc/FAQ $DESTDIR/usr/share/doc/zsh-$version
+}
+
+post_install() {
+    cat >> /etc/shells << "EOF"
+/bin/zsh
+EOF
+}
