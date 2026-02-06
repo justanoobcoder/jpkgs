@@ -1,0 +1,13 @@
+name="libtasn1"
+version="4.20.0"
+url="https://ftp.gnu.org/gnu/libtasn1/libtasn1-$version.tar.gz"
+md5="930f71d788cf37505a0327c1b84741be"
+
+build() {
+    ./configure --prefix=/usr --disable-static &&
+    make
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
