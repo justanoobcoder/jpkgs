@@ -22,5 +22,6 @@ package() {
                  -name \*.3       -o  \
                  -name CMakeLists.txt \) -delete &&
 
+    mkdir -vp $DESTDIR/usr/share/doc/curl-8.15.0
     cp -v -R docs -T $DESTDIR/usr/share/doc/curl-8.15.0
 }
