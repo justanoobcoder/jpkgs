@@ -1,0 +1,12 @@
+name="libidn2"
+version="2.3.8"
+url="https://ftp.gnu.org/gnu/libidn/$name-$version.tar.gz"
+
+build() {
+    ./configure --prefix=/usr --disable-static &&
+    make
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
