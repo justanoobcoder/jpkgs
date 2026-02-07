@@ -1,0 +1,17 @@
+name="slang"
+version="2.3.3"
+url="https://www.jedsoft.org/releases/slang/slang-$version.tar.bz2"
+md5="69015c8300088373eb65ffcc6ed4db8c"
+
+build() {
+    ./configure --prefix=/usr       \
+                --sysconfdir=/etc   \
+                --with-readline=gnu &&
+    make -j1 RPATH=
+}
+
+package() {
+    make install_doc_dir=/usr/share/doc/slang-2.3.3   \
+         SLSH_DOC_DIR=/usr/share/doc/slang-2.3.3/slsh \
+         RPATH= install DESTDIR=$DESTDIR
+}
