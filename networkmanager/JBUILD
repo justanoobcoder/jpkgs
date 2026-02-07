@@ -2,7 +2,7 @@ name="networkmanager"
 version="1.54.0"
 url="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/releases/$version/downloads/NetworkManager-$version.tar.xz"
 md5="300509d31ac641bba24240d708916083"
-deps=("libndp" "newt" "curl" "wpa_supplicant" "libpsl" "libxslt" "polkit")
+deps=("libndp" "newt" "curl" "wpa_supplicant" "libpsl" "libxslt" "polkit" "nss")
 
 prepare() {
     grep -rl '^#!.*python$' | xargs sed -i '1s/python/&3/'
