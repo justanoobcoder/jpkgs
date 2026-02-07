@@ -2,7 +2,7 @@ name="openssh"
 version="10.0p1"
 url="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz"
 md5="689148621a2eaa734497b12bed1c5202"
-deps=("linux-pam")
+deps=("linux-pam" "shadow")
 
 prepare() {
     groupadd -g 50 sshd        &&
@@ -33,4 +33,11 @@ package() {
     install -v -m755 -d $DESTDIR/usr/share/doc/openssh-10.0p1     &&
     install -v -m644    INSTALL LICENCE OVERVIEW README* \
                         $DESTDIR/usr/share/doc/openssh-10.0p1
+}
+
+post_install() {
+    echo "PermitRootLogin no" >> $JPM_ROOT/etc/ssh/sshd_config
+    sed 's@d/login@d/sshd@g' $JPM_ROOT/etc/pam.d/login > $JPM_ROOT/etc/pam.d/sshd &&
+    chmod 644 $JPM_ROOT/etc/pam.d/sshd &&
+    echo "UsePAM yes" >> $JPM_ROOT/etc/ssh/sshd_config
 }
