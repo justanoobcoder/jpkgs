@@ -11,7 +11,7 @@ prepare() {
              -g ldap -s /bin/false ldap
 
     patch -Np1 -i ../openldap-2.6.10-consolidated-1.patch &&
-    autoconf &&
+    autoconf
 }
 
 build() {
