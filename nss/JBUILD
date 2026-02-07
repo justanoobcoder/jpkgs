@@ -1,0 +1,41 @@
+name="nss"
+version="3.115"
+url="https://archive.mozilla.org/pub/security/nss/releases/NSS_3_115_RTM/src/nss-3.115.tar.gz"
+md5="3780ea47a89bccee86feb9d378cdb54e"
+deps=("nspr")
+
+prepare() {
+    patch -Np1 -i ../nss-standalone-1.patch
+}
+
+build() {
+    cd nss &&
+
+    make BUILD_OPT=1                      \
+      NSPR_INCLUDE_DIR=/usr/include/nspr  \
+      USE_SYSTEM_ZLIB=1                   \
+      ZLIB_LIBS=-lz                       \
+      NSS_ENABLE_WERROR=0                 \
+      $([ $(uname -m) = x86_64 ] && echo USE_64=1) \
+      $([ -f /usr/include/sqlite3.h ] && echo NSS_USE_SYSTEM_SQLITE=1)
+}
+
+package() {
+    cd ../dist                                                          &&
+
+    mkdir -pv $DESTDIR/usr/lib
+    install -v -m755 Linux*/lib/*.so              $DESTDIR/usr/lib              &&
+    install -v -m644 Linux*/lib/{*.chk,libcrmf.a} $DESTDIR/usr/lib              &&
+
+    mkdir -pv $DESTDIR/usr/include/nss
+    install -v -m755 -d                           $DESTDIR/usr/include/nss      &&
+    cp -v -RL {public,private}/nss/*              $DESTDIR/usr/include/nss      &&
+
+    mkdir -pv $DESTDIR/usr/bin
+    install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} $DESTDIR/usr/bin &&
+
+    mkdir -pv $DESTDIR/usr/lib/pkgconfig
+    install -v -m644 Linux*/lib/pkgconfig/nss.pc  $DESTDIR/usr/lib/pkgconfig
+
+    ln -sfv ./pkcs11/p11-kit-trust.so $DESTDIR/usr/lib/libnssckbi.so
+}
