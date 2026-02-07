@@ -21,7 +21,7 @@ build() {
     meson setup ..                   \
           --prefix=/usr              \
           --buildtype=release        \
-          --werror=false             \
+          -Dwerror=false             \
           -D man=true                \
           -D session_tracking=logind \
           -D tests=true
