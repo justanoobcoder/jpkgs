@@ -1,0 +1,28 @@
+name="polkit"
+version="126"
+url="https://github.com/polkit-org/polkit/archive/$version/polkit-$version.tar.gz"
+md5="db4ce0a42d5bf8002061f8e34ee9bdd0"
+deps=("duktape" "glib" "libxslt" "linux-pam")
+
+prepare() {
+    groupadd -fg 27 polkitd &&
+    useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
+            -g polkitd -s /bin/false polkitd
+}
+
+build() {
+    mkdir build &&
+    cd    build &&
+
+    meson setup ..                   \
+          --prefix=/usr              \
+          --buildtype=release        \
+          -D man=true                \
+          -D session_tracking=logind \
+          -D tests=true
+    ninja
+}
+
+package() {
+    DESTDIR=$DESTDIR ninja install
+}
