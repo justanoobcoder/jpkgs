@@ -1,0 +1,19 @@
+name="sudo"
+version="1.9.17p2"
+url="https://www.sudo.ws/dist/sudo-$version.tar.gz"
+md5="dcbf46f739ae06b076e1a11cbb271a10"
+deps=("linux-pam" "openldap")
+
+build() {
+    ./configure --prefix=/usr         \
+                --libexecdir=/usr/lib \
+                --with-secure-path    \
+                --with-env-editor     \
+                --docdir=/usr/share/doc/sudo-$version \
+                --with-passprompt="[sudo] password for %p: " &&
+    make
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
