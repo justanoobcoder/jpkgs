@@ -16,9 +16,7 @@ build() {
 
 package() {
     make install DESTDIR=$DESTDIR
-}
 
-post_install() {
     mkdir -pv $DESTDIR/etc/sudoers.d
     cat > $DESTDIR/etc/sudoers.d/00-sudo << "EOF"
 Defaults secure_path="/usr/sbin:/usr/bin:/usr/local/bin"
