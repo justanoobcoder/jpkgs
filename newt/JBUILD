@@ -1,0 +1,21 @@
+name="newt"
+version="0.52.25"
+url="https://releases.pagure.org/newt/newt-$version.tar.gz"
+md5="cca66ed1d8774fb9e3f6a33525de416d"
+deps=("popt" "slang")
+
+build() {
+    sed -e '/install -m 644 $(LIBNEWT)/ s/^/#/' \
+        -e '/$(LIBNEWT):/,/rv/ s/^/#/'          \
+        -e 's/$(LIBNEWT)/$(LIBNEWTSH)/g'        \
+        -i Makefile.in                          &&
+
+    ./configure --prefix=/usr      \
+                --with-gpm-support \
+                --with-python=python3.13 &&
+    make
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
