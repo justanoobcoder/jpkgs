@@ -1,0 +1,48 @@
+name="glib"
+version="2.84.4"
+url="https://download.gnome.org/sources/glib/2.84/glib-2.84.4.tar.xz"
+md5="5655d0ff809b98dd77c02490609fadde"
+deps=("libxslt" "docutils" "pcre2" "wget")
+
+prepare() {
+    wget https://download.gnome.org/sources/gobject-introspection/1.84/gobject-introspection-1.84.0.tar.xz
+    echo "2a62fb1c584616a8ebcd9dd4d045f27e  gobject-introspection-1.84.0.tar.xz" | md5sum -c - || exit 1
+    tar xf gobject-introspection-1.84.0.tar.xz
+    patch -Np1 -i ../glib-skip_warnings-1.patch
+    if [ -e /usr/include/glib-2.0 ]; then
+        rm -rf /usr/include/glib-2.0.old &&
+        mv -vf /usr/include/glib-2.0{,.old}
+    fi
+}
+
+build() {
+    mkdir build &&
+    cd    build &&
+
+    meson setup ..                  \
+          --prefix=/usr             \
+          --buildtype=release       \
+          -D introspection=disabled \
+          -D glib_debug=disabled    \
+          -D man-pages=enabled      \
+          -D sysprof=disabled       &&
+    ninja
+}
+
+package() {
+    DESTDIR=$DESTDIR ninja install
+
+    tar xf ../gobject-introspection-1.84.0.tar.xz
+    
+    meson setup gobject-introspection-1.84.0 gi-build \
+                --prefix=/usr --buildtype=release
+    
+    ninja -C gi-build
+    
+    DESTDIR="$DESTDIR" ninja -C gi-build install
+
+    meson configure -D introspection=enabled &&
+    ninja
+
+    DESTDIR=$DESTDIR ninja install
+}
