@@ -25,6 +25,7 @@ Defaults secure_path="/usr/sbin:/usr/bin:/usr/local/bin"
 %wheel ALL=(ALL) ALL
 EOF
 
+    mkdir -pv $DESTDIR/etc/pam.d
     cat > $DESTDIR/etc/pam.d/sudo << "EOF"
 # Begin /etc/pam.d/sudo
 
