@@ -1,0 +1,30 @@
+name="libassuan"
+version="3.0.2"
+url="https://www.gnupg.org/ftp/gcrypt/libassuan/libassuan-$version.tar.bz2"
+md5="c6f1bf4bd2aaa79cd1635dcc070ba51a"
+deps=("libgpg-error")
+
+build() {
+    ./configure --prefix=/usr &&
+    make                      &&
+
+    make -C doc html                                                       &&
+    makeinfo --html --no-split -o doc/assuan_nochunks.html doc/assuan.texi &&
+    makeinfo --plaintext       -o doc/assuan.txt           doc/assuan.texi
+}
+
+check() {
+    make check
+}
+
+package() {
+    make install DESTDIR=$DESTDIR &&
+
+    install -v -dm755   $DESTDIR/usr/share/doc/libassuan-$version/html &&
+    install -v -m644 doc/assuan.html/* \
+                        $DESTDIR/usr/share/doc/libassuan-$version/html &&
+    install -v -m644 doc/assuan_nochunks.html \
+                        $DESTDIR/usr/share/doc/libassuan-$version      &&
+    install -v -m644 doc/assuan.{txt,texi} \
+                        $DESTDIR/usr/share/doc/libassuan-$version
+}
