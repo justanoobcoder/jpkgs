@@ -1,0 +1,19 @@
+name="pipewire"
+version="1.4.7"
+url="https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/$version/pipewire-$version.tar.bz2"
+md5="e151f5f67b2f09d0b37e0b9493111ca0"
+
+build() {
+    mkdir build &&
+    cd    build &&
+
+    meson setup ..                 \
+          --prefix=/usr            \
+          --buildtype=release      \
+          -D session-managers="[]" &&
+    ninja
+}
+
+package() {
+    DESTDIR=$DESTDIR ninja install
+}
