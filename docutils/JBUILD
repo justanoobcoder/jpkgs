@@ -1,0 +1,18 @@
+name="docutils"
+version="0.21.2"
+url="https://files.pythonhosted.org/packages/source/d/docutils/docutils-$version.tar.gz"
+md5="c4064e1e0e3cd142951fd2b95b830874"
+
+prepare() {
+    for f in /usr/bin/rst*.py; do
+      rm -fv /usr/bin/$(basename $f .py)
+    done
+}
+
+build() {
+    pip3 wheel -w dist --no-build-isolation --no-deps --no-cache-dir $PWD
+}
+
+package() {
+    pip3 install --no-index --find-links dist --no-user docutils
+}
