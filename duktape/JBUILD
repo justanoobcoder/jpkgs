@@ -1,0 +1,13 @@
+name="duktape"
+version="2.7.0"
+url="https://duktape.org/duktape-$version.tar.xz"
+md5="b3200b02ab80125b694bae887d7c1ca6"
+
+build() {
+    sed -i 's/-Os/-O2/' Makefile.sharedlibrary
+    make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr
+}
+
+package() {
+    make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr install DESTDIR=$DESTDIR
+}
