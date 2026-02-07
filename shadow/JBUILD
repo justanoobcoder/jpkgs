@@ -165,4 +165,7 @@ EOF
         install -v -m644 $JPM_ROOT/etc/pam.d/chage $JPM_ROOT/etc/pam.d/${PROGRAM}
         sed -i "s/chage/$PROGRAM/" $JPM_ROOT/etc/pam.d/${PROGRAM}
     done
+
+    if [ -f $JPM_ROOT/etc/login.access ]; then mv -v $JPM_ROOT/etc/login.access{,.NOUSE}; fi
+    if [ -f $JPM_ROOT/etc/limits ]; then mv -v $JPM_ROOT/etc/limits{,.NOUSE}; fi
 }
