@@ -1,0 +1,16 @@
+name="libxslt"
+version="1.1.43"
+url="https://download.gnome.org/sources/libxslt/1.1/libxslt-$version.tar.xz"
+md5="5dc0179c81be7a3082b43030ecfdebd4"
+deps=("libxml2" "docbook-xml" "docbook-xsl-nons")
+
+build() {
+    ./configure --prefix=/usr    \
+                --disable-static \
+                --docdir=/usr/share/doc/libxslt-1.1.43 &&
+    make
+}
+
+package() {
+    make install $DESDIR=DESDIR
+}
