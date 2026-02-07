@@ -1,0 +1,21 @@
+name="nspr"
+version="4.37"
+url="https://archive.mozilla.org/pub/nspr/releases/v$version/src/nspr-$version.tar.gz"
+md5="be993c415dd4590c8e8fc2da7b0594bf"
+
+build() {
+    cd nspr &&
+
+    sed -i '/^RELEASE/s|^|#|' pr/src/misc/Makefile.in &&
+    sed -i 's|$(LIBRARY) ||'  config/rules.mk         &&
+
+    ./configure --prefix=/usr   \
+                --with-mozilla  \
+                --with-pthreads \
+                $([ $(uname -m) = x86_64 ] && echo --enable-64bit) &&
+    make
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
