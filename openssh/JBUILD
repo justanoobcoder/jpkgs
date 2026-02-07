@@ -2,6 +2,7 @@ name="openssh"
 version="10.0p1"
 url="https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$version.tar.gz"
 md5="689148621a2eaa734497b12bed1c5202"
+deps=("linux-pam")
 
 prepare() {
     groupadd -g 50 sshd        &&
