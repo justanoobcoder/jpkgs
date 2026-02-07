@@ -1,0 +1,24 @@
+name="wayland"
+version="1.24.0"
+url="https://gitlab.freedesktop.org/wayland/wayland/-/releases/$version/downloads/wayland-$version.tar.xz"
+md5="fda0b2a73ea2716f61d75767e02008e1"
+deps=("libxml2")
+
+build() {
+    mkdir build &&
+    cd    build &&
+
+    meson setup ..            \
+          --prefix=/usr       \
+          --buildtype=release \
+          -D documentation=false &&
+    ninja
+}
+
+check() {
+    env -u XDG_RUNTIME_DIR ninja test
+}
+
+package() {
+    DESTDIR=$DESTDIR ninja install
+}
