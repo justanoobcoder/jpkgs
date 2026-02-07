@@ -1,0 +1,16 @@
+name="libndp"
+version="1.9"
+url="http://libndp.org/files/libndp-$version.tar.gz"
+md5="9d486750569e7025e5d0afdcc509b93c"
+
+build() {
+    ./configure --prefix=/usr        \
+                --sysconfdir=/etc    \
+                --localstatedir=/var \
+                --disable-static     &&
+    make
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
