@@ -1,0 +1,46 @@
+name="networkmanager"
+version="1.54.0"
+url="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/releases/$version/downloads/NetworkManager-$version.tar.xz"
+md5="300509d31ac641bba24240d708916083"
+deps=("libndp" "newt" "curl" "wpa_supplicant" "libpsl")
+
+prepare() {
+    grep -rl '^#!.*python$' | xargs sed -i '1s/python/&3/'
+}
+
+build() {
+    mkdir build &&
+    cd    build &&
+
+    meson setup ..                    \
+          --prefix=/usr               \
+          --buildtype=release         \
+          -D libaudit=no              \
+          -D nmtui=true               \
+          -D ovs=false                \
+          -D ppp=false                \
+          -D nbft=false               \
+          -D selinux=false            \
+          -D qt=false                 \
+          -D session_tracking=systemd \
+          -D nm_cloud_setup=false     \
+          -D modem_manager=false      &&
+    ninja
+}
+
+package() {
+    DESTDIR=$DESTDIR ninja install &&
+    mv -v $DESTDIR/usr/share/doc/NetworkManager{,-1.54.0}
+    cp -Rv ../docs/{api,libnm} $DESTDIR/usr/share/doc/NetworkManager-1.54.0
+
+    mkdir -pv $DESTDIR/etc/NetworkManager/conf.d
+    cat >> $DESTDIR/etc/NetworkManager/NetworkManager.conf << "EOF"
+[main]
+plugins=keyfile
+EOF
+
+    cat > $DESTDIR/etc/NetworkManager/conf.d/no-dns-update.conf << "EOF"
+[main]
+dns=none
+EOF
+}
