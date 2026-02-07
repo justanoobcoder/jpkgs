@@ -1,0 +1,17 @@
+name="wayland-protocols"
+version="1.45"
+url="https://gitlab.freedesktop.org/wayland/wayland-protocols/-/releases/$version/downloads/wayland-protocols-$version.tar.xz"
+md5="a235baeab3f1c6d57ac4c7c00ecd7e48"
+deps=("wayland")
+
+build() {
+    mkdir build &&
+    cd    build &&
+
+    meson setup --prefix=/usr --buildtype=release &&
+    ninja
+}
+
+package() {
+    DESTDIR=$DESTDIR ninja install
+}
