@@ -6,7 +6,7 @@ deps=("duktape" "glib" "libxslt" "linux-pam")
 
 prepare() {
     if ! getent group polkitd > /dev/null; then
-        groupadd -fg 27 polkitd &&
+        groupadd -fg 27 polkitd
     fi
     if ! getent passwd polkitd > /dev/null; then
         useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
