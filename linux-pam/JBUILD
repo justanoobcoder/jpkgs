@@ -19,11 +19,11 @@ package() {
     install -v -m755 -d $DESTDIR/etc/pam.d &&
 
     cat > $DESTDIR/etc/pam.d/other << "EOF"
-    auth     required       pam_deny.so
-    account  required       pam_deny.so
-    password required       pam_deny.so
-    session  required       pam_deny.so
-    EOF
+auth     required       pam_deny.so
+account  required       pam_deny.so
+password required       pam_deny.so
+session  required       pam_deny.so
+EOF
 
     rm -fv $DESTDIR/etc/pam.d/other
 
