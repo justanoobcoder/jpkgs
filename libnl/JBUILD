@@ -1,0 +1,15 @@
+name="libnl"
+version="3.11.0"
+url="https://github.com/thom311/libnl/releases/download/libnl3_11_0/libnl-$version.tar.gz"
+md5="0a5eb82b494c411931a47638cb0dba51"
+
+build() {
+    ./configure --prefix=/usr     \
+                --sysconfdir=/etc \
+                --disable-static  &&
+    make
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
