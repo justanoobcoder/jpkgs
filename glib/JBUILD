@@ -42,8 +42,9 @@ package() {
     DESTDIR="$DESTDIR" ninja -C gi-build install
 
     export PATH="$DESTDIR/usr/bin:$PATH"
-    export PKG_CONFIG_PATH="$DESTDIR/usr/lib/pkgconfig:$DESTDIR/usr/share/pkgconfig:$PKG_CONFIG_PATH"
-    export LD_LIBRARY_PATH="$DESTDIR/usr/lib:$LD_LIBRARY_PATH"
+    export PKG_CONFIG_PATH="$DESTDIR/usr/lib/pkgconfig:$DESTDIR/usr/lib64/pkgconfig:$DESTDIR/usr/share/pkgconfig:$PKG_CONFIG_PATH"
+    export PKG_CONFIG_SYSROOT_DIR="$DESTDIR"
+    export LD_LIBRARY_PATH="$DESTDIR/usr/lib:$DESTDIR/usr/lib64:$LD_LIBRARY_PATH"
 
     meson configure -D introspection=enabled &&
     ninja
