@@ -1,0 +1,18 @@
+name="libksba"
+version="1.6.7"
+url="https://www.gnupg.org/ftp/gcrypt/libksba/libksba-$version.tar.bz2"
+md5="7e736de467b67c7ea88de746c31ea12f"
+deps=("libgpg-error")
+
+build() {
+    ./configure --prefix=/usr &&
+    make
+}
+
+check() {
+    make check
+}
+
+package() {
+    make install DESTDIR=$DESTDIR
+}
