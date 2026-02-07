@@ -12,5 +12,5 @@ build() {
 }
 
 package() {
-    make install $DESDIR=DESDIR
+    make install DESTDIR=$DESTDIR
 }
