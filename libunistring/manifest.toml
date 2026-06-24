@@ -1,0 +1,21 @@
+[package]
+name = "libunistring"
+version = "1.4.1"
+description = "Functions for manipulating Unicode strings and for manipulating C strings according to the Unicode standard"
+url = "https://ftpmirror.gnu.org/libunistring/libunistring-1.4.1.tar.xz"
+sha256 = "67d88430892527861903788868c77802a217b0959990f7449f2976126a307763"
+source_dir = "libunistring-1.4.1"
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr \
+    --disable-static \
+    --docdir=/usr/share/doc/libunistring-1.4.1
+'''
+
+[hooks]
+pre_configure = '''
+    sed -r '/_GL_EXTERN_C/s/w?memchr|bsearch/(&)/' \
+        -i $(find -name \*.in.h)
+'''
