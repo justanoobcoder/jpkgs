@@ -1,0 +1,13 @@
+[package]
+name = "docbook-xml"
+version = "4.5"
+description = "Document type definitions for verification of XML data files against the DocBook rule set"
+url = "https://archive.docbook.org/xml/4.5/docbook-xml-4.5.zip"
+sha256 = "4e4e037a2b83c98c6c94818390d4bdd3f6e10f6ec62dd79188594e26190dc7b4"
+
+[dependencies]
+requires = ["libarchive", "libxml2"]
+
+[build]
+system = "custom"
+script = "install.sh"
