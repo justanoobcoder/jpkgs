@@ -1,0 +1,26 @@
+[package]
+name = "libxml2"
+version = "2.15.1"
+description = "XML parsing library"
+url = "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz"
+md5 = "fcf38f534bb8996984dba978ee3e27f4"
+
+[dependencies]
+required = ["icu"]
+
+[build]
+system = "meson"
+configure = '''
+    --prefix=/usr      \
+    -D history=enabled \
+    -D icu=enabled 
+'''
+
+[hooks]
+pre_configure = '''
+sed -i "/'git'/,+3d" meson.build
+'''
+
+post_install = '''
+sed "s/--static/--shared/" -i /usr/bin/xml2-config
+'''
