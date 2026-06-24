@@ -1,0 +1,14 @@
+[package]
+name = "duktape"
+version = "2.7.0"
+description = "An embeddable Javascript engine, with a focus on portability and compact footprint"
+url = "https://duktape.org/duktape-2.7.0.tar.xz"
+md5 = "b3200b02ab80125b694bae887d7c1ca6"
+
+[build]
+system = "make"
+make = "make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr"
+install = "make -f Makefile.sharedlibrary INSTALL_PREFIX=/usr install"
+
+[hooks]
+pre_configure = "sed -i 's/-Os/-O2/' Makefile.sharedlibrary"
