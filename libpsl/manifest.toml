@@ -1,0 +1,13 @@
+[package]
+name = "libpsl"
+version = "0.21.5"
+description = "A library for accessing and resolving information from the Public Suffix List"
+url = "https://github.com/rockdaboot/libpsl/releases/download/0.21.5/libpsl-0.21.5.tar.gz"
+md5 = "870a798ee9860b6e77896548428dba7b"
+
+[dependencies]
+requires = ["libidn2", "libunistring"]
+
+[build]
+system = "meson"
+configure = "--prefix=/usr --buildtype=release"
