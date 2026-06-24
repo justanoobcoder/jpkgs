@@ -1,0 +1,17 @@
+[package]
+name = "docutils"
+version = "0.22.4"
+description = "docutils is a set of Python modules and programs for processing plaintext docs into formats such as HTML, XML, or LaTeX."
+url = "https://files.pythonhosted.org/packages/source/d/docutils/docutils-0.22.4.tar.gz"
+md5 = "58f718cd60a87725d4dac56ae427c9f8"
+
+[build]
+system = "custom"
+command = "pip3 wheel -w dist --no-build-isolation --no-deps --no-cache-dir $PWD"
+install = "pip3 install --no-index --find-links dist --no-user --root ${DESTDIR} docutils"
+
+[hooks]
+pre_configure = """
+for f in /usr/bin/rst*.py; do rm -fv /usr/bin/$(basename $f .py); done
+"""
+
