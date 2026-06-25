@@ -1,0 +1,20 @@
+[package]
+name = "libuv"
+version = "1.52.0"
+description = "A multi-platform support library with a focus on asynchronous I/O."
+url = "https://dist.libuv.org/dist/v1.52.0/libuv-v1.52.0.tar.gz"
+md5 = "fc5065a74649e94ea84a06beb8a7e42f"
+source_dir = "libuv-v1.52.0"
+
+[env]
+ACLOCAL = ""
+
+[hooks]
+pre_configure = "sh autogen.sh"
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr \
+    --disable-static
+'''
