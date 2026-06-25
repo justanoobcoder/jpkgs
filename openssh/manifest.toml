@@ -1,0 +1,69 @@
+[package]
+name = "openssh"
+version = "10.2p1"
+description = "SSH clients and the sshd daemon for encrypted authentication and network traffic."
+url = "https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-10.2p1.tar.gz"
+md5 = "801b5ad6da38e0045de20dd5dd2f6a80"
+
+[hooks]
+pre_configure = '''
+install -v -g sys -m700 -d /var/lib/sshd
+
+if ! getent group sshd > /dev/null; then
+    groupadd -g 50 sshd
+fi
+
+if ! getent passwd sshd > /dev/null; then
+    useradd -c 'sshd PrivSep' \
+            -d /var/lib/sshd   \
+            -g sshd            \
+            -s /bin/false      \
+            -u 50 sshd
+fi
+'''
+pre_remove = "systemctl disable --now sshd"
+post_remove = "systemctl daemon-reload"
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr \
+    --sysconfdir=/etc/ssh \
+    --with-privsep-path=/var/lib/sshd \
+    --with-default-path=/usr/bin \
+    --with-superuser-path=/usr/sbin:/usr/bin \
+    --with-pid-dir=/run
+'''
+
+install = '''
+make DESTDIR=$DESTDIR install
+
+# Install ssh-copy-id utility and its man page
+install -v -m755 contrib/ssh-copy-id $DESTDIR/usr/bin
+install -v -m644 contrib/ssh-copy-id.1 $DESTDIR/usr/share/man/man1
+
+# Install documentation
+install -v -m755 -d $DESTDIR/usr/share/doc/openssh-10.2p1
+install -v -m644 INSTALL LICENCE OVERVIEW README* \
+        $DESTDIR/usr/share/doc/openssh-10.2p1
+
+# Install the systemd unit file
+install -v -m755 -d $DESTDIR/usr/lib/systemd/system
+
+# ssh service unit file
+cat > $DESTDIR/usr/lib/systemd/system/sshd.service << "EOF"
+[Unit]
+Description=OpenSSH Daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/sshd -D
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+EOF
+'''
