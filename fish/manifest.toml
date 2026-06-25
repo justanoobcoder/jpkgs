@@ -1,0 +1,13 @@
+[package]
+name = "fish"
+version = "4.8.0"
+description = "The user-friendly command line shell"
+url = "https://github.com/fish-shell/fish-shell/releases/download/4.8.0/fish-4.8.0.tar.xz"
+sha256 = "33af62c7df2fa553e0e84fa81f6ea48acf98c2bfc50036eaacc70ac8ba63e707"
+
+[dependencies]
+requires = ["rustc", "cmake", "pcre2"]
+
+[build]
+system = "cmake"
+out_of_source = true
