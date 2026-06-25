@@ -1,0 +1,25 @@
+[package]
+name = "cmake"
+version = "4.2.3"
+description = "A cross-platform, open-source build system."
+url = "https://cmake.org/files/v4.2/cmake-4.2.3.tar.gz"
+md5 = "803a1720ec822a8660118a38ca51fc1b"
+
+[dependencies]
+requires = ["curl", "libarchive", "libuv", "nghttp2"]
+
+[hooks]
+pre_configure = '''
+sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake &&
+
+./bootstrap --prefix=/usr        \
+            --system-libs        \
+            --mandir=/share/man  \
+            --no-system-jsoncpp  \
+            --no-system-cppdap   \
+            --no-system-librhash \
+            --docdir=/share/doc/cmake-4.2.3
+'''
+
+[build]
+system = "make"
