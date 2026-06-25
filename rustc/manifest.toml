@@ -1,0 +1,14 @@
+[package]
+name = "rustc"
+version = "1.93.1"
+description = "The Rust programming language compiler, cargo package manager, and related tools."
+url = "https://static.rust-lang.org/dist/rustc-1.93.1-src.tar.xz"
+md5 = "65de3c1b0a9304b16ff27433a0dafb95"
+source_dir = "rustc-1.93.1-src"
+
+[dependencies]
+requires = ["cmake", "curl", "libssh2", "llvm"]
+
+[build]
+system = "custom"
+script = "build.sh"
