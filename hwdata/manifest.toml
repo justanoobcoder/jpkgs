@@ -1,0 +1,11 @@
+[package]
+name = "hwdata"
+version = "0.404"
+description = "The hwdata package contains current PCI and vendor id data"
+url = "https://github.com/vcrhonek/hwdata/archive/v0.404/hwdata-0.404.tar.gz"
+md5 = "272bc44afc686355c17ef5d726cfe191"
+
+[build]
+system = "autotools"
+configure = "--prefix=/usr --disable-blacklist"
+make = "true"
