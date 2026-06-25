@@ -1,0 +1,52 @@
+[package]
+name = "gcc"
+version = "15.2.0"
+description = "The GNU Compiler Collection (C, C++, Fortran, Go, Objective C, Modula2)"
+url = "https://ftpmirror.gnu.org/gcc/gcc-15.2.0/gcc-15.2.0.tar.xz"
+md5 = "b861b092bf1af683c46a8aa2e689a6fd"
+
+[hooks]
+pre_configure = '''
+sed -i 's/char [*]q/const &/' libgomp/affinity-fmt.c
+
+case $(uname -m) in
+  x86_64)
+    sed -i.orig '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
+  ;;
+esac
+'''
+
+[build]
+system = "make"
+make = '''
+mkdir build
+cd build
+
+../configure \
+    --prefix=/usr \
+    --disable-multilib \
+    --with-system-zlib \
+    --enable-default-pie \
+    --enable-default-ssp \
+    --enable-host-pie \
+    --disable-fixincludes \
+    --enable-languages=c,c++,fortran,go,objc,obj-c++,m2
+
+# If MAKEFLAGS is set, use it; otherwise fallback to all cores
+make ${MAKEFLAGS:--j$(nproc)}
+'''
+
+install = '''
+cd build
+
+make DESTDIR=$DESTDIR install
+
+mkdir -pv $DESTDIR/usr/share/gdb/auto-load/usr/lib
+mv -v $DESTDIR/usr/lib/*gdb.py $DESTDIR/usr/share/gdb/auto-load/usr/lib
+
+chown -v -R root:root $DESTDIR/usr/lib/gcc/*linux-gnu/15.2.0/include{,-fixed}
+
+mkdir -p $DESTDIR/usr/lib/bfd-plugins
+ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/15.2.0/liblto_plugin.so \
+        $DESTDIR/usr/lib/bfd-plugins/
+'''
