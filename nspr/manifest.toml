@@ -1,0 +1,21 @@
+[package]
+name = "nspr"
+version = "4.38.2"
+description = "Provides a platform-neutral API for system level and libc like functions"
+url = "https://archive.mozilla.org/pub/nspr/releases/v4.38.2/src/nspr-4.38.2.tar.gz"
+md5 = "c1b2e2b3f63774bbbec25af84567135b"
+source_dir = "nspr-4.38.2/nspr"
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr   \
+    --with-mozilla  \
+    --with-pthreads \
+    $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+'''
+
+[hooks]
+pre_configure = '''
+sed -i '/^RELEASE/s|^|#|' pr/src/misc/Makefile.in && sed -i 's|$(LIBRARY) ||'  config/rules.mk
+'''
