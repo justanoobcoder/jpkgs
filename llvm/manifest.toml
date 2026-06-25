@@ -1,0 +1,14 @@
+[package]
+name = "llvm"
+version = "21.1.8"
+description = "A collection of modular and reusable compiler and toolchain technologies (includes Clang)."
+url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.8/llvm-21.1.8.src.tar.xz"
+md5 = "a45a3d91b0b178759b5ee86be81e1ca1"
+source_dir = "llvm-21.1.8.src"
+
+[dependencies]
+requires = ["cmake"]
+
+[build]
+system = "custom"
+script = "build.sh"
