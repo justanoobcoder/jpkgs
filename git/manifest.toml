@@ -1,0 +1,21 @@
+[package]
+name = "git"
+version = "2.53.0"
+description = "A free and open source, distributed version control system"
+url = "https://www.kernel.org/pub/software/scm/git/git-2.53.0.tar.xz"
+md5 = "3857733169a6443e48d20c75ee32f732"
+
+[dependencies]
+requires = ["curl"]
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr \
+    --with-gitconfig=/etc/gitconfig \
+    --with-python=python3 \
+    --with-libpcre2
+'''
+install = '''
+make perllibdir=/usr/lib/perl5/5.42/site_perl DESTDIR=$DESTDIR install
+'''
