@@ -1,0 +1,48 @@
+[package]
+name = "sudo"
+version = "1.9.17p2"
+description = "Allows a system administrator to give certain users/groups the ability to run some commands as root or another user"
+url = "https://www.sudo.ws/dist/sudo-1.9.17p2.tar.gz"
+md5 = "dcbf46f739ae06b076e1a11cbb271a10"
+
+[dependencies]
+requires = ["linux-pam"]
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr         \
+    --libexecdir=/usr/lib \
+    --with-secure-path    \
+    --with-env-editor     \
+    --docdir=/usr/share/doc/sudo-1.9.17p2 \
+    --with-passprompt="[sudo] password for %p: "
+'''
+
+[hooks]
+post_install = '''
+mkdir -p /etc/sudoers.d
+cat > /etc/sudoers.d/00-sudo << "EOF"
+Defaults secure_path="/usr/sbin:/usr/bin"
+%wheel ALL=(ALL) ALL
+EOF
+
+cat > /etc/pam.d/sudo << "EOF"
+# Begin /etc/pam.d/sudo
+
+# include the default auth settings
+auth      include     system-auth
+
+# include the default account settings
+account   include     system-account
+
+# Set default environment variables for the service user
+session   required    pam_env.so
+
+# include system session defaults
+session   include     system-session
+
+# End /etc/pam.d/sudo
+EOF
+chmod 644 /etc/pam.d/sudo
+'''
