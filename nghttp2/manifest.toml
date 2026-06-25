@@ -1,0 +1,18 @@
+[package]
+name = "nghttp2"
+version = "1.68.0"
+description = "An implementation of HTTP/2 and its header compression algorithm, HPACK"
+url = "https://github.com/nghttp2/nghttp2/releases/download/v1.68.0/nghttp2-1.68.0.tar.xz"
+md5 = "d5ba082629f15c67e72b4c26f7935500"
+
+[dependencies]
+requires = ["libxml2"]
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr     \
+    --disable-static  \
+    --enable-lib-only \
+    --docdir=/usr/share/doc/nghttp2-1.68.0
+'''
