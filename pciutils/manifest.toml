@@ -1,0 +1,28 @@
+[package]
+name = "pciutils"
+version = "3.14.0"
+description = "A set of programs for listing PCI devices, inspecting their status and setting their configuration registers"
+url = "https://mj.ucw.cz/download/linux/pci/pciutils-3.14.0.tar.gz"
+md5 = "f70cf2da9377cb484802e291ea60115d"
+
+[dependencies]
+requires = ["hwdata"]
+
+[build]
+system = "make"
+make = '''
+make PREFIX=/usr                \
+     SHAREDIR=/usr/share/hwdata \
+     SHARED=yes
+'''
+install = '''
+make PREFIX=/usr                \
+     SHAREDIR=/usr/share/hwdata \
+     SHARED=yes                 \
+     DESTDIR=$DESTDIR           \
+     install install-lib
+'''
+
+[hooks]
+pre_configure = "sed -r '/INSTALL/{/PCI_IDS|update-pciids /d; s/update-pciids.8//}' -i Makefile"
+post_install = "chmod -v 755 /usr/lib/libpci.so"
