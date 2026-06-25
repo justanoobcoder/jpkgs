@@ -1,0 +1,32 @@
+[package]
+name = "curl"
+version = "8.18.0"
+description = "A command line tool and library for transferring data with URL syntax"
+url = "https://curl.se/download/curl-8.18.0.tar.xz"
+md5 = "dae6088bf7af69d3b0a87c762de92248"
+
+[dependencies]
+required = ["libpsl", "make-ca"]
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr    \
+    --disable-static \
+    --with-openssl   \
+    --with-ca-path=/etc/ssl/certs
+'''
+
+install = '''
+make DESTDIR=$DESTDIR install &&
+
+rm -rf docs/examples/.deps &&
+
+find docs \( -name Makefile\* -o  \
+             -name \*.1       -o  \
+             -name \*.3       -o  \
+             -name CMakeLists.txt \) -delete &&
+
+mkdir -p $DESTDIR/usr/share/doc/curl-8.18.0
+cp -v -R docs -T $DESTDIR/usr/share/doc/curl-8.18.0
+'''
