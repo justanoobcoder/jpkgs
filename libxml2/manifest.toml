@@ -6,7 +6,7 @@ url = "https://download.gnome.org/sources/libxml2/2.15/libxml2-2.15.1.tar.xz"
 md5 = "fcf38f534bb8996984dba978ee3e27f4"
 
 [dependencies]
-required = ["icu"]
+requires = ["icu"]
 
 [build]
 system = "meson"
