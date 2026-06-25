@@ -1,0 +1,14 @@
+[package]
+name = "libssh2"
+version = "1.11.1"
+description = "A client-side C library implementing the SSH2 protocol"
+url = "https://www.libssh2.org/download/libssh2-1.11.1.tar.gz"
+md5 = "38857d10b5c5deb198d6989dacace2e6"
+
+[build]
+system = "autotools"
+configure = '''
+    --prefix=/usr          \
+    --disable-docker-tests \
+    --disable-static
+'''
