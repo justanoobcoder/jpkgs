@@ -1,0 +1,17 @@
+[package]
+name = "harfbuzz"
+version = "14.2.1"
+description = "The HarfBuzz package contains an OpenType text shaping engine"
+url = "https://github.com/harfbuzz/harfbuzz/releases/download/14.2.1/harfbuzz-14.2.1.tar.xz"
+md5 = "dda477eb1b44ac816ec1a8e4effee1af"
+
+[dependencies]
+requires = ["freetype2", "graphite2", "icu"]
+
+[build]
+system = "meson"
+configure = '''
+    --prefix=/usr        \
+    --buildtype=release  \
+    -D graphite2=enabled
+'''
