@@ -1,9 +1,9 @@
 [package]
 name = "which"
-version = "2.23"
+version = "2.25"
 description = "A library for finding an executable by name"
-url = "https://ftpmirror.gnu.org/which/which-2.23.tar.gz"
-md5 = "1963b85914132d78373f02a84cdb3c86"
+url = "https://ftpmirror.gnu.org/which/which-2.25.tar.gz"
+md5 = "60140cb2637634e4f4e68c2e98c6a07b"
 
 [build]
 system = "autotools"
