@@ -1,0 +1,13 @@
+[package]
+name = "btop"
+version = "1.4.7"
+description = "A TUI monitor of resources"
+url = "https://github.com/aristocratos/btop/archive/v1.4.7/btop-1.4.7.tar.gz"
+sha256 = "933de2e4d1b2211a638be463eb6e8616891bfba73aef5d38060bd8319baeefc6"
+
+[build]
+system = "make"
+install = "make DESTDIR=$DESTDIR PREFIX=/usr install"
+
+[hooks]
+pre_configure = "sed -i 's|doc/btop|&-1.4.7|g' Makefile"
