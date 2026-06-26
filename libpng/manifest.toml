@@ -1,0 +1,20 @@
+[package]
+name = "libpng"
+version = "1.6.58"
+description = "The libpng package contains libraries used by other programs for reading and writing PNG files"
+url = "https://downloads.sourceforge.net/libpng/libpng-1.6.58.tar.xz"
+md5 = "c6c372a9d7754c66e0b77a8d34987a3b"
+
+[dependencies]
+requires = ["curl"]
+
+[build]
+system = "autotools"
+configure = "--prefix=/usr --disable-static"
+install = '''
+make DESTDIR=$DESTDIR install &&
+install -vDm644 README libpng-manual.txt -t $DESTDIR/usr/share/doc/libpng-1.6.58
+'''
+
+[hooks]
+pre_configure = "curl -sSL https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-1.6.58-apng.patch.gz | zcat | patch -p1"
