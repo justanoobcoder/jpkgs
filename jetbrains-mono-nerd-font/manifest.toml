@@ -1,0 +1,17 @@
+[package]
+name = "jetbrains-mono-nerd-font"
+version = "3.4.0"
+description = "JetBrains Mono Nerd Font"
+url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/JetBrainsMono.tar.xz"
+sha256 = "ef552a3e638f25125c6ad4c51176a6adcdce295ab1d2ffacf0db060caf8c1582"
+
+[build]
+system = "custom"
+command = "true"
+install = '''
+install -d $DESTDIR/usr/share/fonts/JetBrainsMonoNerdFont
+install -m644 *.ttf $DESTDIR/usr/share/fonts/JetBrainsMonoNerdFont
+'''
+
+[hooks]
+post_install = "fc-cache -fv"
