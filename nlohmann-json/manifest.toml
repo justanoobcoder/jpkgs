@@ -1,0 +1,21 @@
+[package]
+name = "nlohmann-json"
+version = "3.12.0"
+description = "The nlohmann-json package provides a header-only in-memory JSON and interface library for C++"
+url = "https://github.com/nlohmann/json/archive/v3.12.0/json-3.12.0.tar.gz"
+sha256 = "4b92eb0c06d10683f7447ce9406cb97cd4b453be18d7279320f7b2f025c10187"
+
+[dependencies]
+requires = ["cmake"]
+
+[build]
+system = "cmake"
+configure = '''
+    -D CMAKE_INSTALL_PREFIX=/usr \
+    -D CMAKE_BUILD_TYPE=Release  \
+    -D JSON_BuildTests=OFF       \
+    -G Ninja ..
+'''
+out_of_source = "true"
+make = "ninja"
+install = "DESTDIR=$DESTDIR ninja install"
